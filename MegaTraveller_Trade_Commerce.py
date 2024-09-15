@@ -1,8 +1,17 @@
 # Trade and Commerce
 
+# One of the issues with MegaTraveller is the use of hexidecimal to represent values
+# We will be working with only one digit
+#    print("the number in hexadecimal is" + str(number) +
+#       " is " + hex(number).lstrip("0x").rstrip("L"))
+#    hex() converts the number value to hex
+# Question:  Do I even need to bother with converting to actual hex values?  In our
+# case we are just using the symbols to determine dice modifiers.  We may not even
+# need to work hex values out.
+
 # Sourceworld information
-#   Determine Sourceworld Population
-#   Determine Sourceworld Tech Level
+#   Input Sourceworld Population
+#   Input Sourceworld Tech Level
 
 # Destination World Information
 #   Select Destination World Within Range
