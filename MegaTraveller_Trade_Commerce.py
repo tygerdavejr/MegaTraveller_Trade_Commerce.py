@@ -10,15 +10,40 @@
 # case we are just using the symbols to determine dice modifiers.  We may not even
 # need to work hex values out.
 
-# Sourceworld information
-#   Input Sourceworld Population
-#   Input Sourceworld Tech Level
+# Variables
 
-# Destination World Information
+banner1 = '****************************************'
+
+# Input Sourceworld Information
+print('\n' + banner1)
+print('        SOURCEWORLD  INFORMATION')
+print(banner1)
+
+sourceworld_pop = str(input('\nEnter Sourceworld Population Code: '))
+sourceworld_pop = hex(sourceworld_pop)
+sourceworld_tech = str(input('Enter Sourceworld Tech Level Code: '))
+sourceworld_tech - hex(sourceworld_tech)
+print('Population =', sourceworld_pop, ' Tech Level =', sourceworld_tech)
+
+# Input Destination World Information
 #   Select Destination World Within Range
-#   Determin Destination World Population
-#   Determine Destination World Tech Level
-#   Determine Destination World Travel Zone
+print('\n' + banner1)
+print('     DESTINATION WORLD  INFORMATION')
+
+destworld_pop = str(input('\nEnter Destination World Population Code: ')) 
+destworld_tech = str(input('Enter Destination World Tech Level Code: '))
+destworld_zone = str(input('Enter Destination World Travel Zone Code: '))
+
+# Input Crew Information
+print(\n + banner1)
+print('              CREW  SKILLS')
+print(banner1)
+
+steward_skill = int(input('\nEnter Crewmember Steward Skill: '))
+admin_skill = int(input('Enter Crewmember Administration Skill: ')) 
+streetwise_skill = int(input('Enter Crewmember Streetwise Skill: ')) 
+
+modifier = 0
 
 # Determine Passengers
 #   Determine Modifiers
