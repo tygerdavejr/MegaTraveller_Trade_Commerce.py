@@ -1,4 +1,5 @@
 # Trade and Commerce
+"""This module calculates passengers, freight and cargo for MegaTraveller RPG"""
 
 # One of the issues with MegaTraveller is the use of hexidecimal to represent values
 # We will be working with only one digit
