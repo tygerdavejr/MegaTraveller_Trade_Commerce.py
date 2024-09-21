@@ -10,11 +10,11 @@
 # case we are just using the symbols to determine dice modifiers.  We may not even
 # need to work hex values out.
 
-# Imports and Variables
+# Variables
 from random import randint
 
 banner1 = '****************************************'
-
+banner2 = '--------------------'
 
 # Input Sourceworld Information
 print('\n' + banner1)
@@ -22,10 +22,10 @@ print('        SOURCEWORLD  INFORMATION')
 print(banner1)
 
 sourceworld_pop = int(input('\nEnter Sourceworld Population Code: '))
-#sourceworld_pop = hex(sourceworld_pop)
 sourceworld_tech = int(input('Enter Sourceworld Tech Level Code: '))
-#sourceworld_tech - hex(sourceworld_tech)
-print('Population =', sourceworld_pop, ' Tech Level =', sourceworld_tech)
+
+# test action
+print('Sourceworld Population =', sourceworld_pop, 'and Tech Level =', sourceworld_tech)
 
 
 # Input Destination World Information
@@ -37,6 +37,8 @@ destworld_pop = int(input('\nEnter Destination World Population Code: '))
 destworld_tech = int(input('Enter Destination World Tech Level Code: '))
 destworld_zone = str(input('Enter Destination World Travel Zone Code (G/A/R): '))
 
+# test action
+print('Destination World Population =', str(destworld_pop) + ', Tech Level =', destworld_tech, 'and Travel Zone =', destworld_zone) 
 
 # Input Crew Information
 print('\n' + banner1)
@@ -48,18 +50,19 @@ admin_skill = int(input('Enter Crewmember Administration Skill: '))
 streetwise_skill = int(input('Enter Crewmember Streetwise Skill: ')) 
 
 
-# Input Crew Information
+# Input Ship Information
 print('\n' + banner1)
 print('            SHIP INFORMATION')
 print(banner1)
 
-staterooms = int(input('\nEnter the number of Staterooms: '))
-low_passage_births = int(input('Enter the number of Low Passage berths: '))  
+available_staterooms = int(input('\nEnter the number of Staterooms: '))
+low_passage_births = int(input('Enter the number of Low Passage berths: ')) 
+available_cargo_space = int(input('Enter the amount of cargo space in displacement tons: ')) 
+
 
 # Calculate High, Medium and Low Passengers
 
-# Calculate DMs
-
+# Calculate modifiers to dice rolls
 world_digit = 0
 if destworld_pop >= 0 and destworld_pop <= 4:
     world_digit = world_digit - 3
@@ -71,36 +74,77 @@ if destworld_zone == 'R':
 elif destworld_zone == 'A':
     world_digit = world_digit - 6
 
-# Determine High Passenger
-
+# Determine High Passengers
+# I am not smart in Python but there has to be a better way to do this.
+# I am thinking you would define a function and call to it.  The problem
+# with Megatraveller is the table to determine world_digit DMs is not uniform.
 if world_digit <= 1:
     high_passengers = 0
 elif world_digit == 2:
-    high_passengers = (randint(1,6) - randint(1, 6))
+    high_passengers = (randint(1,6) - randint(1, 6)) # 1D - 1D
 elif world_digit == 3:
-    high_passengers = ((randint(1,6) + randint(1, 6)) - (randint(1,6) + randint(1, 6)))
+    high_passengers = ((randint(1,6) + randint(1, 6)) - (randint(1,6) + randint(1, 6))) # 2D - 2D
 elif world_digit >= 4 and world_digit <= 5:
-    high_passengers = ((randint(1,6) + randint(1, 6)) - randint(1,6))
+    high_passengers = ((randint(1,6) + randint(1, 6)) - randint(1,6)) # 2D - 1D
 elif world_digit >= 6 and world_digit <= 7:
-    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - (randint(1,6) + randint(1, 6)))
+    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - (randint(1,6) + randint(1, 6))) # 3D - 2D
 elif world_digit >= 8 and world_digit <= 9:
-    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - randint(1,6))
+    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - randint(1,6)) #3D - 1D
 elif world_digit >= 10:
-    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)))
+    high_passengers = (randint(1,6) + randint(1, 6) + randint(1, 6)) # 3D
 
 high_passengers = high_passengers + steward_skill
 
-if high_passengers < 0:
+if high_passengers < 0:  # You cannot have less than 0 High Passengers
     high_passengers = 0
+if high_passengers >= available_staterooms:  # You cannot have more high Passengers than available staterooms
+     high_passengers = available_staterooms
 
-print('Available number of High Passengers: ', high_passengers)
+required_passenger_cargo = high_passengers # Each high passenger also gets 1 displacement ton of cargo
+available_staterooms = available_staterooms - high_passengers  # Determine the remaining number of staterooms available for Middle Passage
 
-# high_pass_modifier = steward_skill  # These are probably not necessary and I should be fine just adding the skill
-# med_pass_modifier = admin_skill     # I am not certain passing the values like this promotes readability
-# low_pass_modifier = streetwise_skill
+passenger_income = high_passengers * 10_000  # Each High Passenger earns CR10,000
 
+print('\nAvailable number of High Passengers: ', high_passengers)
+print('Remaining staterooms, if any: ', available_staterooms)
+print('Required cargo space for luggage: ', required_passenger_cargo)
+print(banner2)
+print('Total income from High Passengers: CR' + str(passenger_income))
 
+# Determine Middle Passengers
+if world_digit <= 0:
+    middle_passengers = 0
+elif world_digit == 1:
+    middle_passengers = randint(1, 6) - 2 # 1D - 2
+elif world_digit == 2:
+    middle_passengers = randint(1, 6) # 1D
+elif world_digit >= 3 and world_digit <= 4:
+    middle_passengers = ((randint(1,6) + randint(1, 6)) - randint(1,6)) # 2D - 1D
+elif world_digit >= 5 and world_digit <= 6:
+    middle_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - (randint(1,6) + randint(1, 6))) # 3D - 2D
+elif world_digit >= 7 and world_digit <= 8:
+    middle_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - randint(1,6)) #3D - 1D
+elif world_digit == 9:
+    middle_passengers = (randint(1,6) + randint(1, 6) + randint(1, 6)) # 3D
+elif world_digit >= 10:
+    middle_passengers = (randint(1,6) + randint(1, 6) + randint(1, 6) + randint(1, 6)) # 4D
 
+middle_passengers = middle_passengers + admin_skill
+
+if middle_passengers < 0:  # You cannot have less than 0 Middle Passengers
+    middle_passengers = 0
+if middle_passengers >= available_staterooms:  # You cannot have more Middle Passengers than remaining available staterooms
+     middle_passengers = available_staterooms
+
+available_staterooms = available_staterooms - middle_passengers  # Determine the remaining number of staterooms available for Middle Passage
+required_passenger_cargo = required_passenger_cargo + (middle_passengers * .01) # Middle Passengers get 10kg in Displacement for Luggage
+passenger_income = passenger_income + (middle_passengers * 8_000)  # Each Middle Passenger earns CR8,000
+
+print('\nAvailable number of Middle Passengers: ', middle_passengers)
+print('Remaining staterooms, if any: ', available_staterooms)
+print('Required cargo space for luggage: ', required_passenger_cargo)
+print(banner2)
+print('Total income from High and Middle Passengers: CR' + str(passenger_income))
 
 # Determine Passengers
 #   Determine Modifiers
