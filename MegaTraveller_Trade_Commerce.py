@@ -10,32 +10,36 @@
 # case we are just using the symbols to determine dice modifiers.  We may not even
 # need to work hex values out.
 
-# Variables
+# Imports and Variables
+from random import randint
 
 banner1 = '****************************************'
+
 
 # Input Sourceworld Information
 print('\n' + banner1)
 print('        SOURCEWORLD  INFORMATION')
 print(banner1)
 
-sourceworld_pop = str(input('\nEnter Sourceworld Population Code: '))
-sourceworld_pop = hex(sourceworld_pop)
-sourceworld_tech = str(input('Enter Sourceworld Tech Level Code: '))
-sourceworld_tech - hex(sourceworld_tech)
+sourceworld_pop = int(input('\nEnter Sourceworld Population Code: '))
+#sourceworld_pop = hex(sourceworld_pop)
+sourceworld_tech = int(input('Enter Sourceworld Tech Level Code: '))
+#sourceworld_tech - hex(sourceworld_tech)
 print('Population =', sourceworld_pop, ' Tech Level =', sourceworld_tech)
+
 
 # Input Destination World Information
 #   Select Destination World Within Range
 print('\n' + banner1)
 print('     DESTINATION WORLD  INFORMATION')
 
-destworld_pop = str(input('\nEnter Destination World Population Code: ')) 
-destworld_tech = str(input('Enter Destination World Tech Level Code: '))
-destworld_zone = str(input('Enter Destination World Travel Zone Code: '))
+destworld_pop = int(input('\nEnter Destination World Population Code: ')) 
+destworld_tech = int(input('Enter Destination World Tech Level Code: '))
+destworld_zone = str(input('Enter Destination World Travel Zone Code (G/A/R): '))
+
 
 # Input Crew Information
-print(\n + banner1)
+print('\n' + banner1)
 print('              CREW  SKILLS')
 print(banner1)
 
@@ -43,7 +47,60 @@ steward_skill = int(input('\nEnter Crewmember Steward Skill: '))
 admin_skill = int(input('Enter Crewmember Administration Skill: ')) 
 streetwise_skill = int(input('Enter Crewmember Streetwise Skill: ')) 
 
-modifier = 0
+
+# Input Crew Information
+print('\n' + banner1)
+print('            SHIP INFORMATION')
+print(banner1)
+
+staterooms = int(input('\nEnter the number of Staterooms: '))
+low_passage_births = int(input('Enter the number of Low Passage berths: '))  
+
+# Calculate High, Medium and Low Passengers
+
+# Calculate DMs
+
+world_digit = 0
+if destworld_pop >= 0 and destworld_pop <= 4:
+    world_digit = world_digit - 3
+elif destworld_pop >= 8:
+    world_digit = world_digit + 1
+
+if destworld_zone == 'R':
+    world_digit = world_digit - 12
+elif destworld_zone == 'A':
+    world_digit = world_digit - 6
+
+# Determine High Passenger
+
+if world_digit <= 1:
+    high_passengers = 0
+elif world_digit == 2:
+    high_passengers = (randint(1,6) - randint(1, 6))
+elif world_digit == 3:
+    high_passengers = ((randint(1,6) + randint(1, 6)) - (randint(1,6) + randint(1, 6)))
+elif world_digit >= 4 and world_digit <= 5:
+    high_passengers = ((randint(1,6) + randint(1, 6)) - randint(1,6))
+elif world_digit >= 6 and world_digit <= 7:
+    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - (randint(1,6) + randint(1, 6)))
+elif world_digit >= 8 and world_digit <= 9:
+    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)) - randint(1,6))
+elif world_digit >= 10:
+    high_passengers = ((randint(1,6) + randint(1, 6) + randint(1, 6)))
+
+high_passengers = high_passengers + steward_skill
+
+if high_passengers < 0:
+    high_passengers = 0
+
+print('Available number of High Passengers: ', high_passengers)
+
+# high_pass_modifier = steward_skill  # These are probably not necessary and I should be fine just adding the skill
+# med_pass_modifier = admin_skill     # I am not certain passing the values like this promotes readability
+# low_pass_modifier = streetwise_skill
+
+
+
 
 # Determine Passengers
 #   Determine Modifiers
@@ -82,4 +139,3 @@ modifier = 0
 #           Broker Fees = 5% Final Price per Broker Skill Level
 #     Determine Cargo Standard Identifier
 #     Determine Nature of Cargo
-
