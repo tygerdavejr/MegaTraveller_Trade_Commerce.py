@@ -1,8 +1,8 @@
 # MegaTraveller_Trade_Commerce.py
 Automating Trade and Commerce for the MegaTraveller game
 
-There are TWO Python files here.  One was where I started earlier in class, and the second was from after we
-learned functions.
+There are TWO Python files here.  One was where I started earlier in class, and the second (named Trade and 
+Commerce) was from after we learned functions.
 
 I am a massive gamer nerd.  I've been playing games my entire life, and one of my favorites has been MegaTraveller,
 a science fiction roleplaying game I played in high school.  
